@@ -1,19 +1,30 @@
-import React from 'react';
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import ItemList from "./ItemList";
 
-const ItemListContainer = ({ mensaje }) => {
-return (
-    <div style={styles.contenedor}>
-    <h2>{mensaje}</h2>
-      {/* Aquí se agregarán los productos en el futuro */}
-    </div>
-);
-};
+const ItemListContainer = () => {
+  const { categoryId } = useParams();
+  const [products, setProducts] = useState([]);
 
-const styles = {
-    ItemListContainer: {
-    borderRadius: '8px',
-    textAlign: 'center',
-}
+  useEffect(() => {
+    // Simular la llamada a la API o una promise que trae los productos
+    const fetchProducts = async () => {
+      const allProducts = [
+        { id: 1, name: "Remera 1", category: "remeras" },
+        { id: 2, name: "tasa 1", category: "tasas" },
+        { id: 3, name: "cinta 1", category: "cintas" },
+        // Otros productos
+      ];
+      const filteredProducts = categoryId
+        ? allProducts.filter((product) => product.category === categoryId)
+        : allProducts;
+      setProducts(filteredProducts);
+    };
+
+    fetchProducts();
+  }, [categoryId]);
+
+  return <ItemList products={products} />;
 };
 
 export default ItemListContainer;
