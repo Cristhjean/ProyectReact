@@ -1,30 +1,23 @@
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import React from "react";
 import ItemList from "./ItemList";
+import { useParams } from "react-router-dom";
+import useProducts from "../hooks/useProducts";
 
 const ItemListContainer = () => {
-  const { categoryId } = useParams();
-  const [products, setProducts] = useState([]);
+    const { categoryId } = useParams();
+    const { products, loading, error } = useProducts(categoryId);
 
-  useEffect(() => {
-    // Simular la llamada a la API o una promise que trae los productos
-    const fetchProducts = async () => {
-      const allProducts = [
-        { id: 1, name: "Remera 1", category: "remeras" },
-        { id: 2, name: "tasa 1", category: "tasas" },
-        { id: 3, name: "cinta 1", category: "cintas" },
-        // Otros productos
-      ];
-      const filteredProducts = categoryId
-        ? allProducts.filter((product) => product.category === categoryId)
-        : allProducts;
-      setProducts(filteredProducts);
-    };
+    if (loading) return <div>Cargando productos...</div>;
+    if (error) return <div>{error}</div>;
 
-    fetchProducts();
-  }, [categoryId]);
-
-  return <ItemList products={products} />;
+    return (
+        <div className="container mt-4">
+            <h2>{categoryId ? `Categoría: ${categoryId}` : "Todos los productos"}</h2>
+            <div className="row">
+                <ItemList products={products} />
+            </div>
+        </div>
+    );
 };
 
 export default ItemListContainer;

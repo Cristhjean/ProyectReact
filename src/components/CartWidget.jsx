@@ -1,17 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { CartContext } from '../context/CartContext';
 
 const CartWidget = () => {
-return (
-    <div style={styles.cartWidget}>
-    <a href="/cart">🛒 Cart (0)</a>
-    </div>
-);
-};
+    const { getTotalItems } = useContext(CartContext);
 
-const styles = {
-cartWidget: {
-    fontSize: '18px',
-}
+    return (
+        <div style={{ fontSize: '18px' }}>
+            <Link to="/cart">🛒 Cart ({getTotalItems()})</Link>
+        </div>
+    );
 };
 
 export default CartWidget;
